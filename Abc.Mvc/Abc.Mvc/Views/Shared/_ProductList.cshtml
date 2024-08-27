@@ -1,0 +1,126 @@
+﻿@using Abc.Mvc.Models;
+@model IEnumerable<ProductModel>
+
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    /* Kartın alt kısmındaki düzenlemeler */
+    .card-footer {
+        display: flex;
+        align-items: center; /* Yıldız ve butonu dikey olarak hizalar */
+        justify-content: space-between; /* Aralarındaki boşluğu ayarlar */
+        padding: 10px; /* Kart altı boşluk ayarı */
+    }
+
+        .card-footer .btn {
+            margin-right: 1em; /* Buton ile yıldız arasındaki mesafe */
+        }
+
+    label {
+        /* Presentation */
+        font-size: 28px;
+    }
+
+        /* Required Styling */
+        label input[type="checkbox"] {
+            display: none;
+        }
+
+    .custom-checkbox {
+        margin-left: 2em;
+        position: relative;
+        cursor: pointer;
+    }
+
+        .custom-checkbox .glyphicon {
+            color: gold;
+            position: absolute;
+            top: 0.4em;
+            left: -1.25em;
+            font-size: 0.75em;
+        }
+
+        .custom-checkbox .glyphicon-star-empty {
+            color: gray;
+        }
+
+        .custom-checkbox .glyphicon-star {
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        .custom-checkbox:hover .glyphicon-star {
+            opacity: 0.5;
+        }
+
+        .custom-checkbox input[type="checkbox"]:checked ~ .glyphicon-star {
+            opacity: 1;
+        }
+</style>
+
+<div class="row">
+    @foreach (var urun in Model)
+    {
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <img class="card-img-top" src="~/Upload/@urun.Image" alt="@urun.Name">
+                <div class="card-body">
+                    <h4 class="card-title">
+                        <a href="/Home/Details/@urun.Id">@urun.Name</a>
+                    </h4>
+                    <p class="card-text pt-2 description">@urun.Description</p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted product-price">
+                        <i class="fa fa-try" aria-hidden="true"></i>
+                        @urun.Price
+                    </small>
+                    <a href="/Home/Details/@urun.Id" class="btn btn-primary btn-sm float-right">
+                        <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                        Ürünü incele
+                    </a>
+
+                    <!-- Benzersiz ID kullanarak her bir ürün için ayrı checkbox oluşturma -->
+                    <label for="input-@urun.Id" class="custom-checkbox">
+                        <input type="checkbox" id="input-@urun.Id" data-id="@urun.Id" @(urun.IsFavorite ? "checked" : "") />
+                        <i class="glyphicon glyphicon-star-empty"></i>
+                        <i class="glyphicon glyphicon-star"></i>
+                        <span style="font-size: 20px;">Favorite</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    // Sayfa yüklendiğinde
+    document.addEventListener('DOMContentLoaded', function() {
+        // Checkbox'ların durumlarını kontrol et
+        document.querySelectorAll('.custom-checkbox input[type="checkbox"]').forEach(function(checkbox) {
+            checkbox.addEventListener('change', function() {
+                var isChecked = this.checked;
+                var productId = this.getAttribute('data-id');
+                var userId = '@User.Identity.Name'; // veya uygun bir kullanıcı ID'si
+
+                // AJAX isteği gönder
+                var url = isChecked ? '/Favorite/AddedFavorite' : '/Favorite/RemoveFavorite';
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ userId: userId, productId: productId, isChecked: isChecked })
+                }).then(response => response.json())
+                  .then(data => {
+                      if (data.success) {
+                          console.log('Favorite updated successfully.');
+                      } else {
+                          console.error('Failed to update favorite.');
+                      }
+                  });
+            });
+        });
+    });
+</script>

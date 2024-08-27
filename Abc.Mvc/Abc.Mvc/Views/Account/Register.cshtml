@@ -1,0 +1,120 @@
+﻿﻿@model Abc.Mvc.Models.Register
+
+@{
+    ViewBag.Title = "title";
+
+}
+<style>
+
+    body {
+        height: 100vh;
+        background: #ffff;
+    }
+
+    .form-horizontal {
+        padding: 20px;
+        box-sizing: border-box;
+        width: 100%;
+        max-width: none; /* Yatay genişlik için max-width */
+        max-height: none; /* Dikey genişlik için sınır kaldırılıyor */
+        height: 700px; /* Yüksekliğin içeriğe göre ayarlanması */
+        width: 1000px;
+        color: #fff;
+        border-radius: 10px;
+        overflow-y: auto; /* İçerik taşarsa dikey kaydırma çubuğu eklenir */
+    }
+
+    .form-group {
+        padding: 20px; /* İçerik etrafındaki boşluğu artırır */
+        margin-bottom: 50px; /* Form grupları arasındaki boşluğu artırır */
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.1); /* Arka plan rengi (şeffaflık) ekleyebilirsiniz */
+        border-radius: 10px; /* Köşeleri yuvarlar */
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Hafif gölge ekler */
+        font-size: 1.3em; /* Yazı boyutunu artırır */
+        color: black;
+        height: auto; /* Yükseklik içeriğe göre ayarlanır */
+    }
+
+    .btn-primary {
+        padding: 15px 30px; /* Butonun iç boşluklarını artırır */
+        font-size: 1.0em; /* Yazı boyutunu artırır */
+        border-radius: 10px; /* Köşeleri yuvarlar */
+        background-color: #337ab7; /* Butonun arka plan rengini belirler */
+        border: none; /* Buton kenarlarını kaldırır */
+        width: 27%; /* Butonu genişletir */
+    }
+</style>
+
+
+<div class="container pb-5">
+
+    <h2>Yeni Kullanıcı</h2>
+    <hr />
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control form-control-lg" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.SurName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.SurName, new { htmlAttributes = new { @class = "form-control form-control-lg" } })
+                    @Html.ValidationMessageFor(model => model.SurName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control form-control-lg" } })
+                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control form-control-lg", type = "email" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control form-control-lg" } })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.RePassword, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.RePassword, new { htmlAttributes = new { @class = "form-control form-control-lg" } })
+                    @Html.ValidationMessageFor(model => model.RePassword, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Kullanıcı Oluştur" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Abc.Mvc.Entity.Order>
+
+@{
+    ViewBag.Title = "Siparişlerim";
+}
+
+<h2>Siparişlerim</h2>
+
+@if (Model != null && Model.Any())
+{
+
+    if (TempData["ErrorMessage"] != null)
+    {
+        <script>
+        alert('@TempData["ErrorMessage"]');
+        </script>
+    }
+
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Sipariş Numarası</th>
+                <th>Sipariş Tarihi</th>
+                <th>Toplam Tutar</th>
+                <th>Durum</th>
+                <th>Sipariş İşlemleri</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.OrderNumber</td>
+                    <td>@order.OrderDate.ToString("dd/MM/yyyy")</td>
+                    <td>@order.Total.ToString("C")</td>
+                    <td>@order.OrderState</td>
+                    <td>
+                        <a href="@Url.Action("Detay", "Siparislerim", new { id = order.Id })" class="btn btn-primary btn-sm float-right">
+                            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                            Detay İncele
+                        </a>
+                        <a href="@Url.Action("iptal", "Siparislerim", new { id = order.Id })" class="btn btn-danger btn-sm float-right">
+                            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                            Siparişi İptal Et
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Henüz siparişiniz bulunmamaktadır.</p>
+}

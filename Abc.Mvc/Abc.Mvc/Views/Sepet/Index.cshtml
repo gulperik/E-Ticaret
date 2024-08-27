@@ -1,0 +1,81 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Sepetiniz</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Ürün Adı</th>
+            <th>Açıklama</th>
+            <th>Fiyat</th>
+            <th>Stok</th>
+            <th>Resim</th>
+            <th>Miktar</th>  
+            <th>Ekle/Çıkar</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Name</td>
+                <td>@product.Description</td>
+                <td>@product.Price</td>
+                <td>@product.Stock</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(product.Image))
+                    {
+                        <img src="/Upload/@product.Image" width="50" style="width: 100px; height: auto;" />
+                    }
+                </td>
+                <td>@product.Quantity</td> 
+                <td>
+                    @using (Html.BeginForm("RemoveSepet", "Sepet"))
+                    {
+                        @Html.Hidden("id", (int)product.Id)
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            Delete
+                        </button>
+                    }
+                    @using (Html.BeginForm("AddSepet", "Sepet"))
+                    {
+                        <input type="hidden" name="id" value="@product.Id" />
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                            Add To Cart
+                        </button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<td>
+    @if (@ViewBag.TotalPrice != null)
+    {
+        <h3>Toplam Fiyat: @ViewBag.TotalPrice.ToString("C")</h3>
+    }
+    else
+    {
+        <h3>Toplam Fiyat:0.00</h3>
+    }
+
+</td>
+
+<div class="text-center">
+    <a href="/Home/List" class="btn btn-primary">
+        <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+        Alışverişe Devam Et
+    </a>
+    <a href="/Sepet/Checkout" class="btn btn-primary">
+        <i class="fa fa-check" aria-hidden="true"></i>
+        Alışverişi Tamamla
+    </a>
+</div>
+
+

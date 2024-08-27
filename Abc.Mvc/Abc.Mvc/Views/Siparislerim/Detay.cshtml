@@ -1,0 +1,78 @@
+﻿@model Abc.Mvc.Models.OrderDetailsModel
+
+@{
+    ViewBag.Title = "Detay";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<h1>Sipariş Detayı</h1>
+
+<dl class="row">
+    <dt class="col-sm-3">Kullanıcı Adı</dt>
+    <dd class="col-sm-9">@Model.UserName</dd>
+
+    <dt class="col-sm-3">Sipariş Numarası</dt>
+    <dd class="col-sm-9">@Model.OrderNumber</dd>
+
+    <dt class="col-sm-3">Toplam Tutar</dt>
+    <dd class="col-sm-9">
+        <i class="fa fa-try" aria-hidden="true"></i>
+        @Model.Total
+    </dd>
+
+    <dt class="col-sm-3">Sipariş Tarihi</dt>
+    <dd class="col-sm-9">@Model.OrderDate.ToString("dd/MM/yyyy")</dd>
+
+    <dt class="col-sm-3">Adres Bilgisi</dt>
+    <dd class="col-sm-9">
+        @Model.AdresBasligi
+        <br />
+        @Model.Adres
+        <br />
+        @Model.Sehir - @Model.Semt - @Model.Mahalle
+        <br />
+        @Model.PostaKodu
+    </dd>
+
+    <dt class="col-sm-3">Ürünler</dt>
+    <dd class="col-sm-9">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Ürün Resmi</th>
+                    <th>Ürün Adı</th>
+                    <th>Adet</th>
+                    <th>Fiyat</th>
+                    <th>Toplam</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Orderlines)
+                {
+                    <tr>
+                        <td><img src="/Upload/@item.Image" width="70" /></td>
+                        <td>@item.ProductName</td>
+                        <td>@item.Quantity</td>
+                        <td>
+                            <i class="fa fa-try" aria-hidden="true"></i>
+                            @item.Price
+                        </td>
+                        <td>
+                            <i class="fa fa-try" aria-hidden="true"></i>
+                            @(item.Price * item.Quantity)
+                        </td>
+                        <td>
+                            <a href="/Home/Details/@item.ProductId" class="btn btn-primary btn-sm" target="_blank">
+                                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                                Ürün Detayı
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </dd>
+</dl>
